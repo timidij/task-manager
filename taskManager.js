@@ -60,20 +60,24 @@ export const markTaskComplete = async (taskId) =>{
     // console.log(value)
 }
 export const deleteTask= (taskId)=>{
-    console.log("imported")
+ 
     let delTask = getAllTasks()
     try {
         if (!taskId){
             return console.log("please enter a valid number")
         }
-        
+        if(taskId > delTask.length){
+            console.log("The id entered does not exist")
+        }
 
         delTask.forEach((element,index)=>{
         if(element.id == taskId){
             delTask.splice(index, 1)
+            saveTasksToFile(delTask)
+            console.log("task deleted")
+
         }
     })
-    saveTasksToFile(delTask)
     } catch (error) {
         console.log("an Error has occured", error)
     }
@@ -90,6 +94,10 @@ export const saveTasksToFile =(tasks)=>{
 export const loadTasksFromFile= ()=>{
     const fileContent = fs.readFileSync("./tasks.json", "utf-8")
         const collection = JSON.parse(fileContent)
+        if(collection.length== 0){
+            console.log("No task has been added")
+        }
         return collection
         
 }
+

@@ -33,7 +33,7 @@ const addTasks = (req, res)=>{
     }
        
 }
-router.get("/", homepage) 
+router.get("", homepage) 
 router.get("/tasks", getTask) 
 router.post("/tasks", addTasks) 
 
