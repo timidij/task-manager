@@ -11,13 +11,31 @@ app.use(express.json())
 app.use("/api", task)
 
 const PORT = 3000
-
 app.listen(PORT, ()=>{
     console.log("app is running on port", PORT)
    
-main()
 })
 
+import { createServer } from 'node:http';
+
+const startingServer = () =>{
+    
+    const hostname = '127.0.0.1'; // Localhost
+    const port = 3000; 
+
+    // Create an HTTP server
+    const server = createServer((req, res) => {
+       
+        res.statusCode = 200;
+        
+    });
+
+    
+    server.listen(port, hostname, () => {
+        console.log(`Server running at http://${hostname}:${port}/`);
+        console.log('Press Ctrl+C to stop the server.');
+    });
+}
 const displayAddedTask = (obj)=>{
     let very = `✓ Task added successfully!
     ID: ${obj.id}, Title:${obj.title}
@@ -48,7 +66,7 @@ async function main  (){
         case "list":
            let me =  getAllTasks()
            listAllTask(me)
-            break;
+           break;
         case "complete":
             const id = args[1]
             markTaskComplete(id)
@@ -57,6 +75,9 @@ async function main  (){
             const index = args[1]
             deleteTask(index)
             break;
+        case "server":
+            startingServer()
+            break;
         default:
             console.log("an invalid command entered")
     }
@@ -64,4 +85,5 @@ async function main  (){
 
 
 
+main()
 
