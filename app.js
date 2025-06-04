@@ -11,10 +11,6 @@ app.use(express.json())
 app.use("/api", task)
 
 const PORT = 3000
-app.listen(PORT, ()=>{
-    console.log("app is running on port", PORT)
-   
-})
 
 import { createServer } from 'node:http';
 
