@@ -1,6 +1,5 @@
 import fs from "fs"
 export const addTask = async (title, description)=>{
-    // console.log("imported")
     
     try {
        const file = getAllTasks()
@@ -20,7 +19,7 @@ export const addTask = async (title, description)=>{
         return task;
         
     } catch (error) {
-        
+        console.log(error)
     }
    
 
@@ -34,8 +33,7 @@ export const getAllTasks= ()=>{
     
     try {
         let file = loadTasksFromFile()
-    //    let filejs = JSON.parse(file)
-    //    console.log(file)
+    
        return file
 
     } catch (err) {
@@ -45,39 +43,40 @@ export const getAllTasks= ()=>{
 }
 export const markTaskComplete = async (taskId) =>{
     const value  = await getAllTasks()
-    console.log(value)
+    // console.log(value)
+    if(!taskId){
+        return console.log("Task ID missing")
+    }
     value.forEach((element, index)=>{
        
         if (element.id == taskId){
             // console.log("true")
-            element.completed = true
+            element.completed = true;
+            console.log(`task ${taskId} has been marked complete`)
             
         }
         
         
     })
     saveTasksToFile(value)
-    // console.log(value)
+    
 }
 export const deleteTask= (taskId)=>{
- 
+    
     let delTask = getAllTasks()
     try {
-        if (!taskId){
-            return console.log("please enter a valid number")
-        }
-        if(taskId > delTask.length){
-            console.log("The id entered does not exist")
-        }
+        // if (taskId >= delTask.length){
+        //     return console.log("please the task ID does not exist, try a lower ID")
+        // }
+        
 
         delTask.forEach((element,index)=>{
         if(element.id == taskId){
             delTask.splice(index, 1)
-            saveTasksToFile(delTask)
-            console.log("task deleted")
-
+            console.log("your task has been deleted")
         }
     })
+    saveTasksToFile(delTask)
     } catch (error) {
         console.log("an Error has occured", error)
     }
@@ -86,18 +85,18 @@ export const deleteTask= (taskId)=>{
 
 export const saveTasksToFile =(tasks)=>{
     let strive = JSON.stringify(tasks)
-        
-        fs.writeFileSync("./tasks.json", strive)
+        try {
+            
+            fs.writeFileSync("./tasks.json", strive)
+        } catch (error) {
+            
+        }
         // return console.log("created")
     
 }
 export const loadTasksFromFile= ()=>{
     const fileContent = fs.readFileSync("./tasks.json", "utf-8")
         const collection = JSON.parse(fileContent)
-        if(collection.length== 0){
-            console.log("No task has been added")
-        }
         return collection
         
 }
-
